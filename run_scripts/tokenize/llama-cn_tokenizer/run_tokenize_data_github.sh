@@ -12,10 +12,10 @@
 
 ### 指定该作业需要多少个CPU核心
 ### 注意！一般根据队列的CPU核心数填写，比如cpu队列64核，这里申请64核，并在你的程序中尽量使用多线程充分利用64核资源！
-#SBATCH --gres=gpu:8
+#SBATCH --ntasks=64
 
 ### 指定该作业在哪个队列上执行
-#SBATCH --partition=gpu-a800-gsai
+#SBATCH --partition=cpu64c
 
 ### 以上参数用来申请所需资源
 ### 以下命令将在计算节点执行
@@ -32,8 +32,8 @@ conda activate llm
 ### workers多进程数目要开大才够快
 ### append-eod是说在把多个doc合并成一个sample的时候，doc和doc之间会加特殊字符eod作为分隔
 python tools/preprocess_data.py \
-            --input /home/u2021000178/share/jarvis/pile_split_new/Github.jsonl \
-            --output-prefix /fs/fast/u2021000178/data/llama-cn_tokenized/github/train \
+            --input /fs/archive/share/jarvis/pile_original/Github.jsonl \
+            --output-prefix /fs/fast/u2021000178/data/new_llama-cn_tokenized/github/train \
             --vocab /home/u2021000178/share/jarvis/tokenizer/llama_chinese_tokenizer.model \
             --dataset-impl mmap \
             --tokenizer-type LlamaTokenizer \

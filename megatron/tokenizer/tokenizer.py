@@ -247,7 +247,7 @@ class _LlamaTokenizer(AbstractTokenizer):
         raise NotImplementedError
     
     def tokenize(self, text: str):
-        return self.tokenizer.encode(text, add_special_tokens=False)
+        return self.tokenizer.encode(text, add_special_tokens=True)
 
     def tokenize_batch(self, text_batch: Union[List[str], str]):
         if isinstance(text_batch, list):

@@ -33,7 +33,7 @@ conda activate llm
 ### append-eod是说在把多个doc合并成一个sample的时候，doc和doc之间会加特殊字符eod作为分隔
 python /home/share/gsai_joint_project/llama_train/gpt-neox-main/tools/preprocess_data.py \
             --input /fs/fast/u2020000280/data/cn_wiki/wiki-chs-train.jsonl \
-            --output-prefix /fs/fast/u2021000178/data/llama-cn_tokenized/wiki-wentong/train \
+            --output-prefix /fs/fast/u2021000178/data/new_llama-cn_tokenized/wiki-wentong/train \
             --vocab /home/share/jarvis/tokenizer/llama_chinese_tokenizer.model \
             --dataset-impl mmap \
             --tokenizer-type LlamaTokenizer \
@@ -43,7 +43,7 @@ python /home/share/gsai_joint_project/llama_train/gpt-neox-main/tools/preprocess
 
 python /home/share/gsai_joint_project/llama_train/gpt-neox-main/tools/preprocess_data.py \
             --input /fs/fast/u2020000280/data/cn_wiki/wiki-chs-val.jsonl \
-            --output-prefix /fs/fast/u2021000178/data/llama-cn_tokenized/wiki-wentong/val \
+            --output-prefix /fs/fast/u2021000178/data/new_llama-cn_tokenized/wiki-wentong/val \
             --vocab /home/share/jarvis/tokenizer/llama_chinese_tokenizer.model \
             --dataset-impl mmap \
             --tokenizer-type LlamaTokenizer \

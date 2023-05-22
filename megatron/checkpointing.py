@@ -224,16 +224,19 @@ def save_checkpoint(neox_args, iteration, model, optimizer, lr_scheduler):
 
 def custom_llama_cn_vocab_expand_load_func(src, dst):
     # llama word embedding + random initialized chinese word embeddings
-    original_random_cn_word_embeddings = dst.sequential[0].word_embeddings.weight.data[4000:].cpu().detach()
+    len_llama_vocab = src['sequential.0.word_embeddings.weight'].shape[0]
+    print("original llama vocab size:", len_llama_vocab)
+    
+    original_random_cn_word_embeddings = dst.sequential[0].word_embeddings.weight.data[len_llama_vocab:].cpu().detach()
     new_word_embeddings = torch.cat([src['sequential.0.word_embeddings.weight'], original_random_cn_word_embeddings], dim=0)
     src['sequential.0.word_embeddings.weight'] = new_word_embeddings
     
     # llama word embedding + random initialized chinese word embeddings
-    original_random_final_linear_embeddings = dst.sequential[84].final_linear.weight.data[4000:].cpu().detach()
+    original_random_final_linear_embeddings = dst.sequential[84].final_linear.weight.data[len_llama_vocab:].cpu().detach()
     new_final_linear_embeddings = torch.cat([src['sequential.84.final_linear.weight'], original_random_final_linear_embeddings], dim=0)
     src['sequential.84.final_linear.weight'] = new_final_linear_embeddings
 
-    dst.load_state_dict(src, strict=False)
+    dst.load_state_dict(src, strict=True)
 
     
 def zero_grad_hook(grad):
