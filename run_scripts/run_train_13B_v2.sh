@@ -8,7 +8,7 @@
 
 ### 指定该作业需要多少个节点
 ### 注意！没有使用多机并行（MPI/NCCL等），下面参数写1！不要多写，多写了也不会加速程序！
-#SBATCH --nodes=1
+#SBATCH --nodes=10
 
 ### 指定该作业需要多少个CPU核心
 ### 注意！一般根据队列的CPU核心数填写，比如cpu队列64核，这里申请64核，并在你的程序中尽量使用多线程充分利用64核资源！
@@ -25,5 +25,15 @@ source activate llm
 
 
 ### 执行你的作业
-python ./deepy.py train.py -d jarvis_configs/13B/v2 params.yml setup.yml
+nodelist=$(scontrol show hostname $SLURM_NODELIST)
+for i in "${nodelist[@]}"
+do
+   printf "%s slots=8\n" $i > 13B_v2_hostfile
 
+   # or do whatever with individual element of the array
+done
+
+
+python ./deepy.py train.py -d jarvis_configs/13B/v2 params.yml setup.yml -H 13B_v2_hostfile
+
+rm 13B_v2_hostfile

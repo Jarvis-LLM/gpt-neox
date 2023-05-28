@@ -95,15 +95,19 @@
    "distributed-backend": "nccl",
    "lr-decay-style": "cosine",
    "warmup": 0.00006,
-   "checkpoint-factor": 500,
+   "checkpoint-factor": 2000,
    "eval-interval": 2000,
    "eval-iters": 200,
 
    # logging
    "log-interval": 10,
    "steps_per_print": 10,
-   "keep-last-n-checkpoints": 2,
+   "keep-last-n-checkpoints": 3,
    "wall_clock_breakdown": true,
+
+   "vocab-file": "/fs/fast/share/jarvis/tokenizer/jarvis_tokenizer_v2/tokenizer.model",
+   "tokenizer_type": "LlamaTokenizer",
+
 }
 
 

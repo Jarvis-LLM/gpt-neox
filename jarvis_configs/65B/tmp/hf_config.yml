@@ -41,7 +41,7 @@
    "optimizer": {
      "type": "Adam",
      "params": {
-       "lr": 3.0e-5,
+       "lr": 2.0e-5,
        "betas": [0.9, 0.95],
        "eps": 1.0e-8,
      }
@@ -90,20 +90,23 @@
    },
 
    # misc. training settings
-   "train-iters": 300000,
-   "lr-decay-iters": 300000,
+   "train-iters": 10000,
+   "lr-decay-iters": 10000,
    "distributed-backend": "nccl",
    "lr-decay-style": "cosine",
-   "warmup": 0.00006,
-   "checkpoint-factor": 500,
-   "eval-interval": 2000,
+   "warmup": 0.01,
+   "checkpoint-factor": 200,
+   "eval-interval": 200,
    "eval-iters": 200,
 
    # logging
    "log-interval": 10,
    "steps_per_print": 10,
-   "keep-last-n-checkpoints": 2,
+   "keep-last-n-checkpoints": 3,
    "wall_clock_breakdown": true,
+
+   "vocab-file": "/home/u2021000178/share/gsai_joint_project/llama_train/gpt-neox-main/tokenizer.model",
+   "tokenizer_type": "LlamaTokenizer",
 }
 
 

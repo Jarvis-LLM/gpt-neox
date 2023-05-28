@@ -62,7 +62,7 @@
    "data-impl": "mmap",
 
    # activation checkpointing
-   "checkpoint-activations": true,
+   "checkpoint-activations": True,
    "checkpoint-num-layers": 1,
    "partition-activations": true,
    "synchronize-each-layer": true,

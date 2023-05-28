@@ -4,7 +4,7 @@
 #SBATCH --comment=joint_project
 
 ### 给你这个作业起个名字，方便识别不同的作业
-#SBATCH --job-name="tokenize_jarvis_v1_Github"
+#SBATCH --job-name="tokenize_jarvis_v2_Github"
 
 ### 指定该作业需要多少个节点
 ### 注意！没有使用多机并行（MPI/NCCL等），下面参数写1！不要多写，多写了也不会加速程序！
@@ -22,7 +22,7 @@
 
 
 ### 激活一个 Anaconda 环境 your_env
-conda activate llm
+source activate llm
 
 ### 执行你的作业
 ### 本任务是tokenize你的zst数据文件, 
@@ -32,21 +32,21 @@ conda activate llm
 ### workers多进程数目要开大才够快
 ### append-eod是说在把多个doc合并成一个sample的时候，doc和doc之间会加特殊字符eod作为分隔
 
-python /home/share/gsai_joint_project/llama_train/gpt-neox-main/tools/preprocess_data.py \
-            --input /fs/fast/u2020000280/data/github/github-train.jsonl\
-            --output-prefix /fs/fast/share/jarvis/tokenized_data/jarvis_v1/github_ours/train \
-            --vocab /fs/fast/share/jarvis/tokenizer/jarvis_tokenizer_v1/tokenizer.model \
-            --dataset-impl mmap \
-            --tokenizer-type LlamaTokenizer \
-            --append-eod \
-            --workers=64 \
-
-
-# python /home/share/gsai_joint_project/gpt-neox-2.0/tools/preprocess_data.py \
-#             --input /fs/fast/u2020000280/data/github/github-val.jsonl\
-#             --output-prefix /fs/fast/share/jarvis/tokenized_data/jarvis_v1/github_ours/val \
-#             --vocab /fs/fast/share/jarvis/tokenizer/jarvis_tokenizer_v1/tokenizer.model \
+# python /home/share/gsai_joint_project/llama_train/gpt-neox-main/tools/preprocess_data.py \
+#             --input /fs/fast/u2020000280/data/github/github-train.jsonl\
+#             --output-prefix /fs/fast/share/jarvis/tokenized_data/jarvis_v2/github/train \
+#             --vocab /fs/fast/share/jarvis/tokenizer/jarvis_tokenizer_v2/tokenizer.model \
 #             --dataset-impl mmap \
 #             --tokenizer-type LlamaTokenizer \
 #             --append-eod \
 #             --workers=64 \
+
+
+python /home/share/gsai_joint_project/llama_train/gpt-neox-main/tools/preprocess_data.py \
+            --input /fs/fast/u2020000280/data/github/split/github-train.0.jsonl\
+            --output-prefix /fs/fast/share/jarvis/tokenized_data/jarvis_v2/github/train_0 \
+            --vocab /fs/fast/share/jarvis/tokenizer/jarvis_tokenizer_v2/tokenizer.model \
+            --dataset-impl mmap \
+            --tokenizer-type LlamaTokenizer \
+            --append-eod \
+            --workers=64 
