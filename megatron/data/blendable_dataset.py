@@ -32,9 +32,9 @@ class BlendableDataset(torch.utils.data.Dataset):
         num_datasets = len(datasets)
         assert num_datasets == len(weights)
 
-        self.size = 0
+        self.size = 0       # the total number of samples for training
         for dataset in self.datasets:
-            self.size += len(dataset)
+            self.size += len(dataset)   # len(dataset) gets the number of samples in this dataset (have been weighted)
 
         # Normalize weights.
         weights = np.array(weights, dtype=np.float64)
@@ -47,7 +47,22 @@ class BlendableDataset(torch.utils.data.Dataset):
         assert num_datasets < 255
         self.dataset_index = np.zeros(self.size, dtype=np.uint8)
         self.dataset_sample_index = np.zeros(self.size, dtype=np.int64)
+        import os
 
+        # ld_library_path = os.environ.get('LD_LIBRARY_PATH')
+        # if ld_library_path:
+        #     print("!!!!!!!!! Pre LD_LIBRARY_PATH:", ld_library_path)
+        # else:
+        #     print("LD_LIBRARY_PATH is not set.")
+            
+        # new_ld_library_path = "/home/u2021000178/.conda/envs/llm2/lib:/opt/app/cuda/11.8/lib64:/usr/local/nvidia/lib:"
+        # os.environ['LD_LIBRARY_PATH'] = new_ld_library_path
+        # updated_ld_library_path = os.environ['LD_LIBRARY_PATH']
+        # if ld_library_path:
+        #     print("?????????? After LD_LIBRARY_PATH:", updated_ld_library_path)
+        # else:
+        #     print("LD_LIBRARY_PATH is not set.")
+            
         from megatron.data import helpers
 
         helpers.build_blending_indices(
@@ -73,6 +88,7 @@ class BlendableDataset(torch.utils.data.Dataset):
         try:
             dataset_idx = self.dataset_index[idx]
             sample_idx = self.dataset_sample_index[idx]
+            # print('mkl_pre_idx: {}, {}'.format(idx))
             return self.datasets[dataset_idx][sample_idx]
         except IndexError:
             new_idx = idx % len(self)

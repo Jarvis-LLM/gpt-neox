@@ -1,0 +1,34 @@
+# Suggested data paths when using GPT-NeoX locally
+{
+  # "data-path": "./data/pile_00_text_document",
+
+  # or for weighted datasets:
+  # weights = [60241488934, 1933619812, 86530347459, 4962006338, 29465683393, 14045484628, 10331628457]
+  "train-data-paths": [
+      "/fs/fast/share/jarvis/tokenized_data/llama/pilecc/train_text_document",
+    ],
+  "test-data-paths": [
+    "/fs/fast/share/jarvis/tokenized_data/llama/pilecc/train_text_document",
+    ],
+  "valid-data-paths": [
+    "/fs/fast/share/jarvis/tokenized_data/llama/pilecc/train_text_document",
+    ],
+  # To make it same as llama's original ratio
+  "do_loss_check": True,
+  "train-data-weights": [1.],
+  "test-data-weights": [1.],
+  "valid-data-weights": [1.],
+
+  "vocab-file": "/fs/fast/share/jarvis/tokenizer/llama/tokenizer.model",
+  "tokenizer_type": "LlamaTokenizer",
+
+  "save": "/fs/fast/share/jarvis/checkpoints/7B/tmp", # no need to save
+  "load": "/fs/fast/share/jarvis/checkpoints/7B/llama",
+  "finetune": True,
+  "checkpoint_validation_with_forward_pass": False,
+
+  "use_wandb": True,
+  "wandb_host": "https://api.wandb.ai",
+  "wandb_project": "7B_llama_original_loss_check_pilecc",
+  "wandb_team": "jarvis_llm"
+}

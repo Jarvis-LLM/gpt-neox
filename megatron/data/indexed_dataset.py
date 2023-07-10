@@ -408,9 +408,14 @@ class MMapIndexedDataset(torch.utils.data.Dataset):
                 self._dtype = dtypes[dtype_code]
                 self._dtype_size = self._dtype().itemsize
 
-                self._len = struct.unpack("<Q", stream.read(8))[0]
-                self._doc_count = struct.unpack("<Q", stream.read(8))[0]
+                self._len = struct.unpack("<Q", stream.read(8))[0]  # the number of document
+                self._doc_count = struct.unpack("<Q", stream.read(8))[0] # the number of document + 1
                 offset = stream.tell()
+                
+                # print_rank_0("mkl_len: {}".format(self._len))
+                # print_rank_0("mkl_doc_count: {}".format(self._doc_count))
+                # print_rank_0("mkl_offset: {}".format(offset))
+
 
             if not skip_warmup:
                 print_rank_0("    warming up index mmap file...")
@@ -421,14 +426,16 @@ class MMapIndexedDataset(torch.utils.data.Dataset):
             print_rank_0("    reading sizes...")
             self._sizes = np.frombuffer(
                 self._bin_buffer, dtype=np.int32, count=self._len, offset=offset
-            )
+            )   # the size of each doc, len(self._sizes) = self._len
+
             print_rank_0("    reading pointers...")
             self._pointers = np.frombuffer(
                 self._bin_buffer,
                 dtype=np.int64,
                 count=self._len,
                 offset=offset + self._sizes.nbytes,
-            )
+            )   # the start offset of each doc, len(self._pointers) = self._len
+
             print_rank_0("    reading document index...")
             self._doc_idx = np.frombuffer(
                 self._bin_buffer,

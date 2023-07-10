@@ -1,0 +1,45 @@
+# Suggested data paths when using GPT-NeoX locally
+{
+  # "data-path": "./data/pile_00_text_document",
+
+  # or for weighted datasets:
+  # sample nums: [16945465769, 73960007, 530819876, 44332169009, 44742979671, 15469980422, 60235590421, 29452819500, 4961012675, 17406834651, 5343645159, 10330075563, 14320018757, 14345128128, 14273202320, 14359543090, 14725784986, 14144108974]
+  "train-data-paths": [
+    "/fs/fast/share/jarvis/tokenized_data/jarvis_v2/books3/train_text_document",
+  ],
+  # sample nums: [17064008, 72228, 498323, 44132780, 44860030, 14627898, 60456089, 48459669, 14986904, 34525770, 10505413, 20171771, 36407716]
+  "valid-data-paths": [
+    "/fs/fast/share/jarvis/tokenized_data/jarvis_v2/pilevt/books3/val_text_document", 
+  ],
+  "test-data-paths": [
+    "/fs/fast/share/jarvis/tokenized_data/jarvis_v2/pile_val_test/test_text_document",
+  ],
+  # "train-data-weights": [1.0, 1.0, 1.0, 1.0, 1.0, 0.831, 0.831, 0.831, 0.831, 0.831, 0.12],
+  # "valid-data-weights": [1.0, 1.0, 1.0, 1.0, 1.0, 0.06],
+  "train-data-weights": [1.0],
+  "valid-data-weights": [1.0],
+  #   "train-data-weights": [1.0, 1.0, 1.0, 1.0, 1.0],
+  # "valid-data-weights": [1.0],
+  "test-data-weights": [1.0],
+
+  "vocab-file": "/fs/fast/share/jarvis/tokenizer/jarvis_tokenizer_v2/tokenizer.model",
+  "tokenizer_type": "LlamaTokenizer",
+
+
+  "save": "/home/u2021000178/share/gsai_joint_project/llama_train/gpt-neox-main/checkpoints_65B_loss_check",
+  "load": "/home/u2021000178/share/gsai_joint_project/llama_train/gpt-neox-main/checkpoints_65B_v3",
+
+  # ### open the below two arguements when training from the original llama-65B model
+  "finetune": True,
+  # "initialize_llama_cn_with_llama_word_embeddings": True,
+
+  "checkpoint_validation_with_forward_pass": False,
+
+  # #new added parameters for training llama-cn
+  # "only_train_new_chinese": True,
+  "log_dir": "65B_v3_12000_step_books3_val_loss",
+  "use_wandb": True,
+  "wandb_host": "https://api.wandb.ai",
+  "wandb_project": "65B_v3_12000_step_books3_val_loss",
+  "wandb_team": "jarvis_llm"
+}

@@ -863,6 +863,11 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     """
     Whether only to train the new added chinese embeddings and the corresponding final linear layer weights, and freeze all the other model parameters.
     """
+    
+    do_loss_check: bool = False
+    """
+    If do_loss_check, set the dataset into "validation_dataset". This will automatically set do_train to False and do_valid to True, and will exit(0) after validation.
+    """
 
     batch_size: int = None
     """

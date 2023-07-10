@@ -39,9 +39,9 @@
   "tokenizer_type": "LlamaTokenizer",
 
 
-  "save": "checkpoints_65B_tmp",
+  "save": "/fs/fast/share/jarvis/checkpoints/65B/tmp",
   # "load": "/home/share/jarvis/llama-65B-neox-mp",
-  "load": "checkpoints_65B_tmp",
+  "load": "/fs/fast/share/jarvis/checkpoints/65B/tmp",
   "finetune": False,
   "checkpoint_validation_with_forward_pass": False,
 

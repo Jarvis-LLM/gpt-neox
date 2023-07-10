@@ -60,7 +60,7 @@
   },
 
    # batch / data settings
-   "train_micro_batch_size_per_gpu": 32,
+   "train_micro_batch_size_per_gpu": 2,
    "data-impl": "mmap",
 
    # activation checkpointing
@@ -76,26 +76,26 @@
    "attention-dropout": 0,
   
    # precision settings
-  #  "fp16": {
-  #    "fp16": true,
-  #    "enabled": true,
-  #    "loss_scale": 0,
-  #    "loss_scale_window": 1000,
-  #    "hysteresis": 2,
-  #    "min_loss_scale": 1
-  #  },
-  
-   "bf16": {
-     "enabled": True,
+   "fp16": {
+     "fp16": true,
+     "enabled": true,
+     "loss_scale": 0,
+     "loss_scale_window": 1000,
+     "hysteresis": 2,
+     "min_loss_scale": 1
    },
+  
+  #  "bf16": {
+  #    "enabled": True,
+  #  },
 
    # misc. training settings
-   "train-iters": 10000,
-   "lr-decay-iters": 10000,
+   "train-iters": 100,
+   "lr-decay-iters": 100,
    "distributed-backend": "nccl",
    "lr-decay-style": "cosine",
    "warmup": 0.01,
-   "checkpoint-factor": 200,
+   "checkpoint-factor": 2,
    "eval-interval": 200,
    "eval-iters": 200,
 

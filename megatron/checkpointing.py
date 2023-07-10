@@ -42,6 +42,8 @@ def check_checkpoint_args(neox_args, checkpoint_args):
 
     assert isinstance(checkpoint_args, dict), "args stored in checkpoint is a dict"
     for checkpoint_arg_name, checkpoint_arg_value in checkpoint_args.items():
+        if checkpoint_arg_name in  ["max_position_embeddings", "seq_length"]:
+            continue
         args_value = getattr(neox_args, checkpoint_arg_name)
         error_message = "{} value from checkpoint ({}) is not equal to the currently set argument value ({}).".format(
             checkpoint_arg_name, checkpoint_arg_value, args_value
@@ -231,10 +233,11 @@ def custom_llama_cn_vocab_expand_load_func(src, dst):
     new_word_embeddings = torch.cat([src['sequential.0.word_embeddings.weight'], original_random_cn_word_embeddings], dim=0)
     src['sequential.0.word_embeddings.weight'] = new_word_embeddings
     
+
     # llama word embedding + random initialized chinese word embeddings
-    original_random_final_linear_embeddings = dst.sequential[84].final_linear.weight.data[len_llama_vocab:].cpu().detach()
-    new_final_linear_embeddings = torch.cat([src['sequential.84.final_linear.weight'], original_random_final_linear_embeddings], dim=0)
-    src['sequential.84.final_linear.weight'] = new_final_linear_embeddings
+    original_random_final_linear_embeddings = dst.sequential[36].final_linear.weight.data[len_llama_vocab:].cpu().detach()
+    new_final_linear_embeddings = torch.cat([src['sequential.36.final_linear.weight'], original_random_final_linear_embeddings], dim=0)
+    src['sequential.36.final_linear.weight'] = new_final_linear_embeddings
 
     dst.load_state_dict(src, strict=True)
 

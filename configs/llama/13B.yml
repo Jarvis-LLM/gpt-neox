@@ -23,4 +23,5 @@
   "use_bias_in_attn_linear": false,
   "mlp_type": "llama",
   "activation": "silu",
+     "attention_config": [[["flash"], 40]],
 }

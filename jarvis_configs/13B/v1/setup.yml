@@ -3,9 +3,9 @@
   # "data-path": "./data/pile_00_text_document",
 
   # or for weighted datasets:
-  "train-data-paths": ["/home/u2021000178/share/jarvis/pile_processed/all_text_document"],
-  "test-data-paths": ["/home/u2021000178/share/jarvis/pile_processed/test_text_document" ],
-  "valid-data-paths": ["/home/u2021000178/share/jarvis/pile_processed/val_text_document"],
+  "train-data-paths": ["/fs/fast/u2021000178/data/gpt2_tokenized/arxiv/train_text_document"],
+  "test-data-paths": ["/fs/fast/u2021000178/data/gpt2_tokenized/arxiv/train_text_document" ],
+  "valid-data-paths": ["/fs/fast/u2021000178/data/gpt2_tokenized/arxiv/train_text_document"],
   "train-data-weights": [1.],
   "test-data-weights": [1.],
   "valid-data-weights": [1.],

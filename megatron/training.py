@@ -179,6 +179,7 @@ def pretrain(neox_args):
 
     """
     # setup logging and timers
+
     init_wandb(neox_args=neox_args)
     timers = Timers(
         use_wandb=neox_args.use_wandb, tensorboard_writer=neox_args.tensorboard_writer
@@ -212,6 +213,13 @@ def pretrain(neox_args):
     print_rank_0("training ...")
 
     iteration = neox_args.iteration
+
+    # # tmp
+    # neox_args.do_train = False
+    if neox_args.do_loss_check:
+        neox_args.do_train = False
+        neox_args.do_valid = True
+        
     if neox_args.do_train and neox_args.train_iters > 0:
         # edge case: save step 0 checkpoint if requested and we're starting from step 0
         if neox_args.save and 0 in neox_args.save_iters and iteration == 0:
@@ -234,6 +242,7 @@ def pretrain(neox_args):
         )
 
     if neox_args.do_valid:
+        print("begin to valid...")
         prefix = "the end of training for val data"
         evaluate_and_print_results(
             neox_args=neox_args,
@@ -246,6 +255,9 @@ def pretrain(neox_args):
             timers=timers,
         )
 
+    if neox_args.do_loss_check:
+        exit(0)
+
     if neox_args.save and iteration != 0:
         save_checkpoint(
             neox_args=neox_args,
@@ -255,6 +267,9 @@ def pretrain(neox_args):
             lr_scheduler=lr_scheduler,
         )
 
+    # # tmp
+    # neox_args.do_test = False
+    
     if neox_args.do_test:
         # Run on test data.
         prefix = "the end of training for test data"
@@ -277,6 +292,7 @@ def _get_batch(neox_args, tokenizer, keys, data, datatype):
 
     # Unpack.
     tokens_ = data_b["text"].long()
+    
     labels = tokens_[:, 1:].contiguous()
     tokens = tokens_[:, :-1].contiguous()
 
@@ -302,6 +318,7 @@ def get_batch(neox_args, data_iterator):
         data = next(data_iterator)
     else:
         data = None
+
     return _get_batch(
         neox_args=neox_args,
         tokenizer=neox_args.tokenizer,

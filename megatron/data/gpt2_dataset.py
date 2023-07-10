@@ -39,7 +39,11 @@ class GPT2Dataset(torch.utils.data.Dataset):
         build_index_mappings=True,
         use_shared_fs=True,
     ):
-
+        '''
+        documents: created as: documents = np.arange(start=0, stop=total_num_of_documents, step=1, dtype=np.int32)
+        indexed_dataset: the original loaded dataset
+        num_samples: total number of numples that needed to be trained for this dataset
+        '''
         self.name = name
         self.indexed_dataset = indexed_dataset
 
@@ -79,6 +83,8 @@ class GPT2Dataset(torch.utils.data.Dataset):
             doc_index_l = self.sample_idx[idx + 1][0]
             offset_f = self.sample_idx[idx][1]
             offset_l = self.sample_idx[idx + 1][1]
+            # print("mkl_idx: {}, {}, {}, {}, {}".format(idx, doc_index_f, doc_index_l, offset_f, offset_l))
+    
             # If we are within the same document, just extract the chunk.
             if doc_index_f == doc_index_l:
                 sample = self.indexed_dataset.get(
@@ -103,6 +109,7 @@ class GPT2Dataset(torch.utils.data.Dataset):
                 sample = np.concatenate(sample_list)
 
             return {"text": np.array(sample, dtype=np.int64)}
+        
         except IndexError:
             new_idx = idx % len(self)
             print(
@@ -110,6 +117,27 @@ class GPT2Dataset(torch.utils.data.Dataset):
             )
             return self[new_idx]
 
+def count_value_ranges(arr):
+    # Count the number of values in different ranges
+    count_less_2048 = np.count_nonzero(arr < 2048)
+    count_2048_4096 = np.count_nonzero((arr >= 2048) & (arr < 4096))
+    count_4096_8192 = np.count_nonzero((arr >= 4096) & (arr < 8192))
+    count_8192_16384 = np.count_nonzero((arr >= 8192) & (arr < 16384))
+    count_greater_16384 = np.count_nonzero(arr >= 16384)
+    
+    ratios = [count_less_2048, count_2048_4096, count_4096_8192, count_8192_16384, count_greater_16384]
+    ratios = [round(x / sum(ratios), 4) for x in ratios]
+    
+    # Return the counts as a dictionary
+    counts = {
+        "< 2048": ratios[0],
+        "2048 - 4096": ratios[1],
+        "4096 - 8192": ratios[2],
+        "8192 - 16384": ratios[3],
+        "> 16384": ratios[4]
+    }
+    
+    return counts
 
 def _build_index_mappings(
     name,
@@ -121,7 +149,11 @@ def _build_index_mappings(
     seed,
     use_shared_fs=True,
 ):
-    """Build doc-idx, sample-idx, and shuffle-idx.
+    """
+    Arguments:
+    - sizes: it contains the number of tokens of each doc
+    
+    Build doc-idx, sample-idx, and shuffle-idx.
     doc-idx: is an array (ordered) of documents to be used in training.
     sample-idx: is the start document index and document offset for each
        training sample.
@@ -129,6 +161,8 @@ def _build_index_mappings(
     """
     # Number of tokens in each epoch and number of required epochs.
     tokens_per_epoch = _num_tokens(documents, sizes)
+    # print("name {}".format(name), count_value_ranges(sizes[documents]))
+
     print("name {}, tokens per epoch {}".format(name, tokens_per_epoch))
     num_epochs = _num_epochs(tokens_per_epoch, seq_length, num_samples)
     print("name {}, num_epochs {}".format(name, num_epochs))
@@ -165,7 +199,9 @@ def _build_index_mappings(
             )
             # doc-idx.
             start_time = time.time()
-            doc_idx = _build_doc_idx(documents, num_epochs, np_rng)
+            # doc_idx = _build_doc_idx(documents, num_epochs, np_rng) # original
+            doc_idx = _my_build_doc_idx(documents, num_epochs, seed)  # ours
+            
             np.save(doc_idx_filename, doc_idx, allow_pickle=True)
             print_rank_0(
                 " > elapsed time to build and save doc-idx mapping "
@@ -188,6 +224,13 @@ def _build_index_mappings(
                 sample_idx = helpers.build_sample_idx_int64(
                     sizes, doc_idx, seq_length, num_epochs, tokens_per_epoch
                 )
+            '''
+            Sample index (sample_idx) is used for gpt2 like dataset for which
+            the documents are flattened and the samples are built based on this
+            1-D flatten array. It is a 2D array with sizes [number-of-samples + 1, 2]
+            where [..., 0] contains the index into `doc_idx` and [..., 1] is the
+            starting offset in that document
+            '''
             np.save(sample_idx_filename, sample_idx, allow_pickle=True)
             print_rank_0(
                 " > elapsed time to build and save sample-idx mapping "
@@ -198,6 +241,7 @@ def _build_index_mappings(
             # -1 is due to data structure used to retrieve the index:
             #    sample i --> [sample_idx[i], sample_idx[i+1])
             shuffle_idx = _build_shuffle_idx(sample_idx.shape[0] - 1, np_rng)
+
             np.save(shuffle_idx_filename, shuffle_idx, allow_pickle=True)
             print_rank_0(
                 " > elapsed time to build and save shuffle-idx mapping"
@@ -260,6 +304,18 @@ def _build_doc_idx(documents, num_epochs, np_rng):
     np_rng.shuffle(doc_idx)
     return doc_idx
 
+def _my_build_doc_idx(documents, num_epochs, seed):
+    """Build an array with length = number-of-epochs * number-of-documents.
+    Each index is mapped to a corresponding document."""
+    doc_idx = np.mgrid[0:num_epochs, 0 : len(documents)][1]
+    doc_idx[:] = documents
+    for i in range(len(doc_idx)):
+        np_rng = np.random.RandomState(seed=seed+i)
+        np_rng.shuffle(doc_idx[i])
+    doc_idx = doc_idx.reshape(-1)
+    doc_idx = doc_idx.astype(np.int32)
+    return doc_idx
+
 
 def _build_sample_idx(sizes, doc_idx, seq_length, num_epochs, tokens_per_epoch):
     """Sample index mapping is a 2D array with sizes
@@ -315,5 +371,5 @@ def _build_shuffle_idx(size, np_rng):
     if size >= (np.iinfo(np.uint32).max - 1):
         dtype_ = np.int64
     shuffle_idx = np.arange(start=0, stop=size, step=1, dtype=dtype_)
-    np_rng.shuffle(shuffle_idx)
+    # np_rng.shuffle(shuffle_idx) # originally, it should be enabled
     return shuffle_idx

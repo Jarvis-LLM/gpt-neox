@@ -12,13 +12,13 @@
 
 ### 指定该作业需要多少个CPU核心
 ### 注意！一般根据队列的CPU核心数填写，比如cpu队列64核，这里申请64核，并在你的程序中尽量使用多线程充分利用64核资源！
-#SBATCH --ntasks=64
+#SBATCH --ntasks=24
 
 ### 指定该作业在哪个队列上执行
-#SBATCH --partition=cpu64c
+#SBATCH --partition=cpu24c
 
 ### output log
-#SBATCH --output=sbatch_convert_llama_65B_v2.log
+#SBATCH --output=convert_to_hf_v32.log
 
 ### 以上参数用来申请所需资源
 ### 以下命令将在计算节点执行
@@ -26,12 +26,18 @@
 ### 本例使用Anaconda中的Python，先将Python添加到环境变量配置好环境变量
 source activate llm
 
-
 ### 执行你的作业
+model_id="v43-en_20B_cn_hq_10B_real"
+step="global_step22000"
+input_dir=/fs/fast/share/jarvis/checkpoints/1-3B/$model_id/$step
+config_file=/home/share/gsai_joint_project/llama_train/gpt-neox-main/jarvis_configs/1-3B/$model_id/hf_config.yml
+output_dir=/fs/archive/share/jarvis/checkpoints/$model_id"_"$step
+tokenizer_file="/fs/archive/share/yulan/tokenizer/yulan_v1/*"
 
-# python ./tools/convert_to_hf.py --input_dir /home/share/gsai_joint_project/gpt-neox-2.0/checkpoints_1-3B_v3-pile+chinese/global_step22000 --config_file /home/u2021000178/share/gsai_joint_project/gpt-neox-2.0/jarvis_configs/1-3B/v3-pile+chinese/hf_config.yml --output_dir /home/share/gsai_joint_project/1-3B_v3-pile+chinese_global_step22000_hf
-# python ./tools/convert_sequential_to_hf.py --input_dir /home/u2021000178/share/gsai_joint_project/llama_train/gpt-neox-main/checkpoints_v7-llama7b-linly/global_step2000 --config_file /home/u2021000178/share/gsai_joint_project/llama_train/gpt-neox-main/jarvis_configs/1-3B/v7-llama7b+linly/hf_config.yml --output_dir /home/u2021000178/share/gsai_joint_project/v7-llama7b-linly_step2000_hf/
-# python ./tools/convert_llama7b_to_hf.py --input_dir /home/share/gsai_joint_project/gpt-neox-2.0/llama_model/global_step0 --config_file /home/share/gsai_joint_project/llama_train/gpt-neox-main/jarvis_configs/1-3B/v7-llama7b+linly/hf_config.yml --output_dir /home/share/gsai_joint_project/llama_7b_test_convert/
-mkdir /fs/archive/share/jarvis/checkpoints/llama-65B-v2-step3000-hf/
-python ./tools/convert_llama7b_to_hf.py --input_dir /home/u2021000178/share/gsai_joint_project/llama_train/gpt-neox-main/checkpoints_65B_v2/global_step3000 --config_file /home/share/gsai_joint_project/llama_train/gpt-neox-main/jarvis_configs/65B/v2/hf_config.yml --output_dir /fs/archive/share/jarvis/checkpoints/llama-65B-v2-step3000-hf/
+python ./tools/convert_to_hf.py --input_dir $input_dir --config_file $config_file  --output_dir $output_dir
+
+cp $tokenizer_file $output_dir
+chgrp -R 2400194 $output_dir
+
+chmod -R 770 $output_dir
 echo "-----> Task finished..."

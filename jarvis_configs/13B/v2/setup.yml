@@ -22,10 +22,8 @@
   "load": "checkpoints_13B_v2",
   "checkpoint_validation_with_forward_pass": False,
 
-  "tensorboard-dir": "tensorboard_13B_v2",
-  "log-dir": "logs_13B_v2",
   "use_wandb": True,
   "wandb_host": "https://api.wandb.ai",
-  "wandb_project": "13B_v2",
+  "wandb_project": "13B_tmp",
   "wandb_team": "jarvis_llm"
 }

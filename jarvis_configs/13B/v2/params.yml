@@ -66,23 +66,23 @@
    "attention-dropout": 0,
 
    # precision settings
-   "fp16": {
-     "fp16": true,
-     "enabled": true,
-     "loss_scale": 0,
-     "loss_scale_window": 1000,
-     "hysteresis": 2,
-     "min_loss_scale": 1
-   },
-
-  #  "bf16": {
-  #    "enabled": True,
+  #  "fp16": {
+  #    "fp16": true,
+  #    "enabled": true,
+  #    "loss_scale": 0,
+  #    "loss_scale_window": 1000,
+  #    "hysteresis": 2,
+  #    "min_loss_scale": 1
   #  },
+
+   "bf16": {
+     "enabled": True,
+   },
 
 
    # misc. training settings
-   "train-iters": 320000,
-   "lr-decay-iters": 320000,
+   "train-iters": 100,
+   "lr-decay-iters": 100,
    "distributed-backend": "nccl",
    "lr-decay-style": "cosine",
    "warmup": 0.01,
