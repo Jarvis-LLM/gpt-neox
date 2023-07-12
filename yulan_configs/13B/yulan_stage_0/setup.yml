@@ -1,0 +1,156 @@
+# Suggested data paths when using GPT-NeoX locally
+{
+  # "data-path": "./data/pile_00_text_document",
+
+  # or for weighted datasets:
+# [
+#          3882973059,   
+#          123100879,    
+#          1543137856,   
+#          1089551512,   
+#          4080838760,   
+#          3489491150,   
+#          642364406,    
+#          379386272,    
+#          3964565194,   
+#          367769664,    
+#          19025801608,  
+#          2382465757,   
+#          861030794,
+#          64886714388,    
+#          516767002,    
+#          70762579,     
+#          6905526,      
+#          39366963,     
+#          3441393335,
+#          39602233014,   
+#          5873654754,   
+#          1445536400,   
+#          4859519942,   
+#          54400596,     
+#          7328814962,   
+#          6915773312,   
+#          17046333298,  
+#          3120967670
+#      ]   
+  "train-data-paths": [
+      '/fs/archive/share/yulan/tokenized_data/zhihu-qa-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/wiki-baike-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/bdbk-baike-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/tiger-baike-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/legal_case-law-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc-web-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc100-web-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/clueweb22-web-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cbooks-book-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/bestsellers-book-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cicg-news-cn/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/stack_exchange-qa-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/wiki-baike-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/refinedweb-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc100-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/clueweb22-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/ccstories-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/openwebtext2-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/c4-web-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/books3-book-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/gutenberg-book-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/realnews-news-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/ccnews-news-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cicg-news-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/arxiv-paper-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/github-code-en/0/train_text_document',
+      '/fs/archive/share/yulan/tokenized_data/wiki-baike-multi/0/train_text_document'
+    ],
+  "train-data-weights": [2.022974, 0.126931, 1.604568, 1.100773, 1.972943, 1.786649, 0.327599, 0.196348, 3.100832, 0.298799, 9.260466, 1.198181, 1.067535, 31.358095, 0.252403, 0.035487, 0.004268, 0.019461, 1.684625, 19.143284, 3.379098, 0.845915, 2.363029, 0.026893, 3.557611, 3.476251, 8.280427, 1.508554],
+
+  # [
+  #        4141963,   
+  #        1512686,   
+  #        2522793,   
+  #        1439087,   
+  #        5388729,   
+  #        4039856,   
+  #        1274936,   
+  #        1380265,   
+  #        4743490,   
+  #        17963070,  
+  #        19621087,  
+  #        2447134,   
+  #        1083666,
+  #        65770804,   
+  #        1034370,   
+  #        1033068,   
+  #        1119129,   
+  #        961696,    
+  #        4128771,
+  #        40341419,   
+  #        6216457,   
+  #        2633104,   
+  #        5261440,   
+  #        1160960,   
+  #        8363742,   
+  #        6995434,   
+  #        17799908,  
+  #        3636994
+  #    ]   
+     
+  "valid-data-paths": [
+      '/fs/archive/share/yulan/tokenized_data/zhihu-qa-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/wiki-baike-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/bdbk-baike-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/tiger-baike-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/legal_case-law-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc-web-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc100-web-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/clueweb22-web-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cbooks-book-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/bestsellers-book-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cicg-news-cn/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/stack_exchange-qa-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/wiki-baike-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/refinedweb-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cc100-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/clueweb22-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/ccstories-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/openwebtext2-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/c4-web-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/books3-book-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/gutenberg-book-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/realnews-news-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/ccnews-news-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/cicg-news-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/arxiv-paper-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/github-code-en/0/val_text_document',
+      '/fs/archive/share/yulan/tokenized_data/wiki-baike-multi/0/val_text_document'
+    ],
+    
+  "valid-data-weights": [2.064458, 0.130217, 1.406667, 1.098462, 1.995074, 1.785258, 0.326312, 0.197044, 3.306727, 0.314593, 9.354646, 1.205804, 1.068143, 31.250351, 0.252301, 0.035639, 0.004128, 0.019431, 1.680696, 19.148842, 3.374301, 0.926803, 2.360964, 0.028514, 3.556425, 3.459615, 8.154237, 1.494349],
+
+  
+  "test-data-paths": ['/fs/archive/share/yulan/tokenized_data/zhihu-qa-cn/0/val_text_document'],
+  "test-data-weights": [1.],
+
+
+  # If weight_by_num_documents is True, Builds dataset weights from a multinomial distribution over groups of data according to the number of documents in each group.
+  # WARNING: setting this to True will override any user provided weights
+  # "weight_by_num_documents": false,
+  # "weighted_sampler_alpha": 0.3,
+
+  "vocab-file": "/fs/archive/share/yulan/tokenizer/yulan_v1/tokenizer.model",
+  "tokenizer_type": "LlamaTokenizer",
+  
+  "save": "/fs/fast/share/jarvis/checkpoints/13B/yulan_stage_0",
+  "load": "/fs/fast/share/jarvis/checkpoints/13B/yulan_stage_0", 
+  "checkpoint_validation_with_forward_pass": False,
+  
+  # "finetune": True,
+  # "initialize_llama_cn_with_llama_word_embeddings": True, # expand vocab
+
+  "use_wandb": True,
+  "wandb_host": "https://api.wandb.ai",
+  "wandb_project": "1-3B_13B_yulan_stage_0",
+  "wandb_team": "jarvis_llm"
+}

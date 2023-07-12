@@ -1,0 +1,108 @@
+# GPT-2 pretraining setup
+{
+   # parallelism settings ( you will want to change these based on your cluster setup, ideally scheduling pipeline stages
+   # across the node boundaries )
+   "pipe-parallel-size": 1,
+   "model-parallel-size": 2,
+   "make_vocab_size_divisible_by": 1,
+
+   # model settings
+   "num-layers": 40,
+   "hidden-size": 4864,
+   "num-attention-heads": 38,
+   "seq-length": 2048,
+   "max-position-embeddings": 2048,
+   "pos_emb": "rotary",
+   "rotary_pct": 1,
+   "no_weight_tying": true,
+   "gpt_j_residual": false,
+   "output_layer_parallelism": "column",
+   "norm": "rmsnorm",
+   "rms_norm_epsilon": 1.0e-6,
+
+   "scaled_upper_triang_masked_softmax_fusion": false,
+   "bias_gelu_fusion": false,
+   "use_bias_in_norms": false,
+   "use_bias_in_attn_linear": false,
+   "mlp_type": "llama",
+   "activation": "silu",
+   "attention_config": [[["flash"], 40]],
+
+   # init methods
+   "init_method": "small_init",
+   "output_layer_init_method": "wang_init",
+
+
+   # optimizer settings
+   "optimizer": {
+     "type": "Adam",
+     "params": {
+       "lr": 0.0003,
+       "betas": [0.9, 0.95],
+       "eps": 1.0e-8,
+     }
+   },
+   "min_lr": 3.0e-5,
+
+   # for all zero_optimization options, see https://www.deepspeed.ai/docs/config-json/#zero-optimizations-for-fp16-training
+   "zero_optimization": {
+    "stage": 1,
+    "allgather_partitions": True,
+    "allgather_bucket_size": 500000000,
+    "overlap_comm": True,
+    "reduce_scatter": True,
+    "reduce_bucket_size": 500000000,
+    "contiguous_gradients": True,
+  },
+
+
+   # batch / data settings
+   "train_micro_batch_size_per_gpu": 48,
+   "data-impl": "mmap",
+
+   # activation checkpointing
+   "checkpoint-activations": true,
+   "checkpoint-num-layers": 1,
+   "partition-activations": true,
+   "synchronize-each-layer": true,
+
+   # regularization
+   "gradient_clipping": 1.0,
+   "weight-decay": 0.1,
+   "hidden-dropout": 0,
+   "attention-dropout": 0,
+
+   # precision settings
+  #  "fp16": {
+  #    "fp16": true,
+  #    "enabled": true,
+  #    "loss_scale": 0,
+  #    "loss_scale_window": 1000,
+  #    "hysteresis": 2,
+  #    "min_loss_scale": 1
+  #  },
+
+   "bf16": {
+     "enabled": True,
+   },
+
+
+   # misc. training settings
+   "train-iters": 318000, # stage_0 needs to train 43853 steps (~43800 steps)
+   "lr-decay-iters": 318000,
+   "distributed-backend": "nccl",
+   "lr-decay-style": "cosine",
+   "warmup": 0.006,
+   "checkpoint-factor": 200,
+   "eval-interval": 4000,
+   "eval-iters": 45,
+
+   # logging
+   "log-interval": 50,
+   "steps_per_print": 50,
+   "keep-last-n-checkpoints": 25,
+   "wall_clock_breakdown": true,
+
+   "vocab-file": "/fs/archive/share/yulan/tokenizer/yulan_v1/tokenizer.model",
+   "tokenizer_type": "LlamaTokenizer",
+}
